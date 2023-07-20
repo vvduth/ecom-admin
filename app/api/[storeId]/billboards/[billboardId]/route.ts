@@ -29,10 +29,11 @@ export async function PATCH(
   { params }: { params: { billboardId: string; storeId: string } }
 ) {
   try {
+    
     const { userId } = auth();
     const body = await req.json();
     const { label, imageUrl } = body;
-
+  
     if (!userId) {
       return new NextResponse("unauthorized", { status: 401 });
     }
@@ -63,8 +64,6 @@ export async function PATCH(
     const billboard = await prismadb.billboard.updateMany({
       where: {
         id: params.billboardId,
-        label,
-        imageUrl,
       },
       data: {
         label,

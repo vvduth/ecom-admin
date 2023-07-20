@@ -21,8 +21,6 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import AlertModal from "@/components/modals/alert-modal";
-import ApiAlert from "@/components/ui/api-alert";
-import useOrigin from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/iamge-upload";
 interface BillboardFormProps {
   initialData: Billboard | null;
@@ -49,7 +47,6 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const toastMessage = initialData ? "Billboard updated" : "Billboard Created";
   const action = initialData ? "Save changes" : "Create";
 
-  const origin = useOrigin();
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
@@ -61,12 +58,14 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const onSubmit = async (data: BillboardFormValues) => {
     try {
       setLoading(true);
+      console.log(data)
       if (initialData) {
         await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
       } else {
         await axios.post(`/api/${params.storeId}/billboards`, data);
       }
       router.refresh();
+      router.push(`/${params.storeId}/billboards`)
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Somethign went wrong");
@@ -80,7 +79,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
       router.refresh();
-      router.push("/");
+      router.push(`/${params.storeId}/billboards`);
       toast.success("Store deleted");
     } catch (error) {
       toast.error("Billboard can not be deleted if it has one (or more) active category.");
