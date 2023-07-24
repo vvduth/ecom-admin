@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CategoryColumns } from "./columns";
+import { SizeColumn } from "./columns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import { useState } from "react";
 import axios from "axios";
 import AlertModal from "@/components/modals/alert-modal";
 interface CellActionProps {
-  data: CategoryColumns;
+  data: SizeColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -27,19 +27,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const params = useParams();
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Category Id copied to clipboard");
+    toast.success("Size Id copied to clipboard");
   };
   const onDelete = async () => {
     try {
       setLoading(true);
       await axios.delete(
-        `/api/${params.storeId}/categories/${data.id}`
+        `/api/${params.storeId}/sizes/${data.id}`
       );
       router.refresh();
       toast.success("Store deleted");
     } catch (error) {
       toast.error(
-        "categories can not be deleted if it has one (or more) active category."
+        "Cannot revome size right now.Please try again later."
       );
     } finally {
       setLoading(false);
@@ -69,7 +69,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <Copy className="mr-2 h-4 w-4" /> Copy Id
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => router.push(`/${params.storeId}/categories/${data.id}`)}
+          onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}
         >
           <Edit className="mr-2 h-4 w-4" /> Update
         </DropdownMenuItem>
