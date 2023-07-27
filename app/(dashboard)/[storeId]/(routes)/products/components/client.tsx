@@ -32,7 +32,7 @@ const ProductClient :React.FC<ProductClientProps> = ({data}) => {
       <DataTable 
         columns={columns}
         data={data}
-        searchKey="label"
+        searchKey="name"
       />
       <Heading title="API" description="Api calls for products" />
       <Separator/>
