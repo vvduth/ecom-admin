@@ -15,6 +15,7 @@ export async function GET(
       where: {
         id: params.categoryId,
       },
+      include: { billboard: true },
     });
 
     return NextResponse.json(category);
@@ -29,11 +30,10 @@ export async function PATCH(
   { params }: { params: { categoryId: string; storeId: string } }
 ) {
   try {
-    
     const { userId } = auth();
     const body = await req.json();
     const { name, billboardId } = body;
-  
+
     if (!userId) {
       return new NextResponse("unauthorized", { status: 401 });
     }
